@@ -6,8 +6,9 @@ include("app/includes/PHP/login.auth.php");
 <!DOCTYPE html>
 <html lang="en">
 <?php
+$CSS = "assets/css/form.css";
 $title = "Login";
-include("app/includes/html/html.head.php");
+include("app/includes/html/form.head.php");
 ?>
 
 <body>
@@ -26,10 +27,10 @@ include("app/includes/html/html.head.php");
                     <div style="margin-y:0.5rem;">&nbsp</div>
                     <button type="submit" id="login-btn" class="btn btn-primary btn-block"><?php echo $title;?></button>
                 </form>
-            
+            </div>
         </div>
     </div>
-    <?php include("app/includes/html/html.foot.php"); ?>
+    <?php include("app/includes/html/form.foot.php"); ?>
 </body>
 
 </html>
