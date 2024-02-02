@@ -16,6 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $_SESSION['id'] = $user_data["id"];
             $_SESSION['username'] = $user_data["username"];
             $_SESSION['password'] = $user_data["password"];
+            $isAuthenticated = isset($_SESSION['id']);
+
+            echo json_encode(['isAuthenticated' => $isAuthenticated]);
             echo '<script>
             alert("Welcome, ' . $user_data['username'] . '!");
             window.location.href = "index.php";
