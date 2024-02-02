@@ -1,50 +1,34 @@
 <?php
 session_start();
 include("app/includes/components/connection.php");
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    if (!empty($username) && !empty($password)) {
-        $query = "SELECT * FROM users WHERE username = '$username'";
-        $result = mysqli_query($conn, $query);
-        if ($result && mysqli_num_rows($result) > 0) {
-            $user_data = mysqli_fetch_assoc($result);
-            if ($user_data['password'] === $password) {
-                $_SESSION['id'] = $user_data['id'];
-                header("location: index.php");
-                die;
-            }
-        } else {
-            echo '<script>
-            window.alert("Incorrect Username or Password!")
-            window.location="login.php"
-            </script>';
-        }
-    } else {
-        echo '<script>
-        window.alert("Please Enter Valid Input!")
-        window.location="login.php"
-        </script>';
-    }
-
-}
+include("app/includes/PHP/login.auth.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$title = "- Login";
+$title = "Login";
 include("app/includes/html/html.head.php");
 ?>
-<div class="container">
-    <form action="login.php" method="post">
-        <h3>Login</h3>
-        <input type="text" class="username" name="username" id="username" placeholder="Username" required>
-        <input type="password" class="username" name="password" id="password" placeholder="Password" required>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-</div>
 
 <body>
+    <div class="container">
+        <div class="d-flex col-12 flex-row flex-wrap align-items-center justify-content-center p-5">
+            <div
+                class="d-flex col-12 col-sm-8 col-lg-4 flex-wrap align-items-center justify-content-center border rounded-4 bg-white p-5 shadow-lg">
+                <form id="login-form" method="post">
+                    <h3><?php echo $title;?></h3>
+                    <div class="form-group mb-4">
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                    </div>
+                    <div style="margin-y:0.5rem;">&nbsp</div>
+                    <button type="submit" id="login-btn" class="btn btn-primary btn-block"><?php echo $title;?></button>
+                </form>
+            
+        </div>
+    </div>
     <?php include("app/includes/html/html.foot.php"); ?>
 </body>
 
