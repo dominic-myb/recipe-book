@@ -1,38 +1,75 @@
-
 body {
-    background-color: #d2e3c8;
-  }
-.container{
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 50px;
+  background-color: #d2e3c8;
 }
-.table-container{
-  margin: 1vh 35vh 35vh 35vh;
+
+header {
+  display: block;
+  padding: 20px;
 }
+
+header div {
+  float: left;
+  margin-left: 18vh;
+}
+
+header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+header button {
+  float: right;
+  margin-right: 18vh;
+  margin-top: 5px;
+}
+
+.container {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 50px;
+}
+
+.table-container {
+  margin: -4vh 20vh 20vh 20vh;
+}
+
 table {
+  margin-top: 10vh;
   border-collapse: collapse;
   width: 100%;
   align-items: center;
 }
-table, th, td {
+
+table,
+th,
+td {
   border: 1px solid black;
 }
+
 #recipe-tbl {
-    vertical-align: top;
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-#recipe-tbl td, #recipe-tbl th {
+  vertical-align: top;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#recipe-tbl td,
+#recipe-tbl th {
   border: 1px solid #ddd;
   padding: 8px;
 }
-  
-#recipe-tbl tr:nth-child(even){background-color: #f2f2f2;}
 
-#recipe-tbl tr:hover {background-color: #ddd;}
+#recipe-tbl tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#recipe-tbl tr:hover {
+  background-color: #ddd;
+}
 
 #recipe-tbl th {
   padding-top: 12px;
@@ -41,27 +78,39 @@ table, th, td {
   background-color: #048eaa;
   color: white;
 }
-.box1 h3{
+
+.box1 h3 {
   float: left;
 }
-.box1 a{
-  float: right;   
+
+.box1 a {
+  float: right;
   margin-left: 50%;
 }
-.form-label{
+
+.form-label {
   font-size: 25px;
 }
-img{
+
+img {
   object-fit: cover;
 }
-a{
+
+a {
   color: #000;
   text-decoration: none;
   font-size: 30px;
 }
-span{
+
+span {
   color: orange;
 }
-#add{
+
+#add {
   vertical-align: top;
+}
+img{
+  height: 100px;
+  width: 100px; 
+  object-fit:cover;
 }
