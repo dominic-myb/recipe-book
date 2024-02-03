@@ -49,9 +49,9 @@ include("app/includes/html/index.head.php");
   <div class="content">
     <h2>Culinary Collaborate</h2>
     <p>Unleash your inner chef, connect over recipes, and savor the art of delicious collaboration!</p>
-    <!-- <video autoplay muted loop id="video-bg">
+    <video autoplay muted loop id="video-bg">
       <source src="assets/video/background.mp4" type="video/mp4">
-    </video> -->
+    </video>
   </div>
 
   <div class="recipe" id="recipe">
@@ -69,8 +69,8 @@ include("app/includes/html/index.head.php");
             <div class="item">
               <div class="card">
                 <div class="card-image">
-                  <input type="hidden" name="id" id="id" value="<?php $row['id']?>">
-                  <img src="<?php $row['image_filename'];?>" alt="">
+                  <input type="hidden" name="id" id="id" value="<?php $row['id'] ?>">
+                  <img src="assets/uploads/<?php echo $row['image_filename']; ?>" alt="">
                 </div>
                 <div class="card-body">
                   <i class="fa-solid fa-star"></i>
@@ -85,14 +85,9 @@ include("app/includes/html/index.head.php");
                   </label>
 
                   <h3>
-                    <?php echo $row['title']?>
+                    <?php echo $row['title'] ?>
                   </h3>
-
-                  <label>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea, cum.
-                  </label>
-                  <br>
-                  <br>
+                  
                   <center>
                     <button type="submit" class="view-recipe" name="view-recipe">
                       View
@@ -107,33 +102,6 @@ include("app/includes/html/index.head.php");
       }
       ?>
 
-    </div>
-  </div>
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-  </button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form action="">
-            <input type="text" name="" id="">
-            <input type="text" name="" id="">
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-        </form>
-      </div>
     </div>
   </div>
 
