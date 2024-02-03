@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2024 at 02:55 AM
+-- Generation Time: Feb 03, 2024 at 01:59 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,9 +42,9 @@ CREATE TABLE `comments` (
 
 CREATE TABLE `images` (
   `id` int(11) NOT NULL,
-  `filename` varchar(255) NOT NULL,
   `recipe_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  `image_filename` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -68,11 +68,11 @@ CREATE TABLE `ratings` (
 
 CREATE TABLE `recipes` (
   `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `ingredients` varchar(255) NOT NULL,
-  `instructions` varchar(255) NOT NULL,
-  `image_filename` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `ingredients` text NOT NULL,
+  `instructions` text NOT NULL,
+  `image_filename` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -86,13 +86,6 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(1, 'dominic', 'dominic');
 
 --
 -- Indexes for dumped tables
@@ -120,7 +113,8 @@ ALTER TABLE `ratings`
 -- Indexes for table `recipes`
 --
 ALTER TABLE `recipes`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `image_filename` (`image_filename`);
 
 --
 -- Indexes for table `users`
@@ -142,7 +136,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `ratings`
@@ -154,13 +148,13 @@ ALTER TABLE `ratings`
 -- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
