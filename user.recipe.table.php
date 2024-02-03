@@ -8,20 +8,18 @@ session_start();
 <?php
 $CSS = "assets/css/table.css";
 $title = "My Recipe";
-include("app/includes/html/form.head.php");
+include("app/includes/html/table.head.php");
 ?>
 
 <body>
-    <div class="container mt-2">
-        <div class="row">
-            <div class="col-lg-6">
-                <a href="#" class="ml-auto">Culinary <span>Collaborate</span></a>
-            </div>
-            <div class="col-lg-6">
-                <button class="btn btn-success ml-auto mb-1" id="add">Post a Recipe</button>
-            </div>
+    <header>
+        <div class="logo">
+            <a href="index.php">Culinary <span>Collaborate</span></a>
         </div>
-    </div>
+        <nav>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#post">Post a Recipe</button>
+        </nav>
+    </header>
     <div class="table-container">
         <table class="table table-striped" id="recipe-tbl">
             <thead>
@@ -35,7 +33,12 @@ include("app/includes/html/form.head.php");
             <tbody>
                 <?php
                 $user_id = $_SESSION['id'];
-                $sql = "SELECT * FROM recipes WHERE user_id = '$user_id' ORDER BY id DESC";
+                $sql = "SELECT recipes.title, images.image_filename FROM images 
+                    INNER JOIN recipes ON recipes.id = images.recipe_id 
+                    INNER JOIN users ON images.user_id = users.id
+                    WHERE users.id = '$user_id'
+                    ORDER BY recipes.id DESC";
+
                 $result = $conn->query($sql);
                 $num = 1;
                 if ($result->num_rows > 0) {
@@ -45,23 +48,71 @@ include("app/includes/html/form.head.php");
                             <td class="align-middle text-center" scope="row">
                                 <?php echo $num++; ?>
                             </td>
-                            <td class="align-middle text-center"><img src="assets/img/flat-white.png" alt=""
-                                    style="height: 150px; width 150px; object-fit:cover;"></td>
+                            <td class="align-middle text-center"><img src="assets/uploads/<?php echo $row['image_filename'] ?>"
+                                    alt=""></td>
                             <td class="align-middle text-center">
                                 <?php echo $row['title']; ?>
                             </td>
                             <td class="align-middle text-center">
-                                <button type="button" class="btn btn-primary m-2">Update</button>
+                                <button type="button" class="btn btn-primary m-2">Edit Post</button>
                                 <button type="button" class="btn btn-danger m-2">Delete</button>
                             </td>
                         </tr>
                         <?php
                     }
+                } else {
+                    ?>
+                    <tr>
+                        <td colspan="4" style="text-align: center;">You don't have any post yet</td>
+                    </tr>
+                    <?php
                 }
                 ?>
             </tbody>
         </table>
     </div>
+    <!-- Post A Recipe Modal -->
+    <div class="modal fade modal-lg" id="post" tabindex="-1" aria-labelledby="post-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <div class="w-100">
+                        <h1 class="modal-title fs-5 d-inline mx-auto" id="post-label">Create Post</h1>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="upload.php" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="mb-4">
+                            <label for="title" class="form-label">Title</label>
+                            <input class="form-control" type="text" name="title" id="title" placeholder="Title"
+                                required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="file" name="imgToUpload" class="form-control" id="imgToUpload" required>
+                            <label class="input-group-text" for="imgToUpload">Upload</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ingredients" class="form-label">Ingredients</label>
+                            <textarea class="form-control" name="ingredients" id="ingredients" rows="3"
+                                required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="instructions" class="form-label">Instructions</label>
+                            <textarea class="form-control" name="instructions" id="instructions" rows="3"
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <?php include("app/includes/html/table.foot.php"); ?>
 </body>
 
 </html>
