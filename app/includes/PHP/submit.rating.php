@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("app/includes/components/connection.php");
+include("../components/connection.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['rating'])) {
     $rating = $_POST['rating'];
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['rating'])) {
         if (!$updateResult) {
             echo "Error updating rating: " . mysqli_error($conn);
         }
-        header("location: index.viewrecipe.php?id=$recipeID");
+        header("location: ../../../index.view.recipe.php?id=$recipeID");
 
     } else {
 
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['rating'])) {
         if (!$insertResult) {
             echo "Error inserting rating: " . mysqli_error($conn);
         }
-        header("location: index.viewrecipe.php?id=$recipeID");
+        header("location: ../../../index.view.recipe.php?id=$recipeID");
 
     }
 
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['rating'])) {
         if (!$insertCommentResult) {
             echo "Error inserting comment: " . mysqli_error($conn);
         }
-        header("location: index.viewrecipe.php?id=$recipeID");
+        header("location: ../../../index.view.recipe.php?id=$recipeID");
 
     }
 } else {
