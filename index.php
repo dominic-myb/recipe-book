@@ -49,9 +49,9 @@ include("app/includes/html/index.head.php");
   <div class="content">
     <h2>Culinary Collaborate</h2>
     <p>Unleash your inner chef, connect over recipes, and savor the art of delicious collaboration!</p>
-    <!-- <video autoplay muted loop id="video-bg">
-<source src="assets/video/background.mp4" type="video/mp4">
-</video> -->
+    <video autoplay muted loop id="video-bg">
+      <source src="assets/video/background.mp4" type="video/mp4">
+    </video>
   </div>
 
   <div class="recipe" id="recipe">
@@ -72,7 +72,7 @@ include("app/includes/html/index.head.php");
             $averageRating = $avgRatingData['avg_rating'];
             $ratingCount = $avgRatingData['rating_count'];
 
-            // Calculate percentage based on the average rating (assuming a 5-star system)
+            // Calculate percentage based on the average rating 
             $percentage = ($averageRating / 5) * 100;
         ?>
             <div class="item">
@@ -96,15 +96,11 @@ include("app/includes/html/index.head.php");
                   }
                   ?>
                   <span class="rating-percentage"><?php echo round($percentage, 2) . '%'; ?></span>
-
                   <h3>
                     <?php echo $row['title']; ?>
                   </h3>
-
                   <center>
-
                     <a href="index.view.recipe.php?id=<?php echo $row['id'] ?>" class="btn btn-success">View</a>
-
                   </center>
                 </div>
               </div>
