@@ -6,16 +6,17 @@ function uploadImage($recipeID, $userID, $fileName) {
     global $conn;
 
     $stmt = $conn->prepare("INSERT INTO images (recipe_id, user_id, image_filename) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $recipeID, $userID, $fileName);
+    $stmt->bind_param("iis", $recipeID, $userID, $fileName);
     $stmt->execute();
     $stmt->close();
 }
+
 
 function insertRecipe($userID, $title, $ingredients, $instructions, $fileName) {
     global $conn;
 
     $stmt = $conn->prepare("INSERT INTO recipes (user_id, title, ingredients, instructions, image_filename) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $userID, $title, $ingredients, $instructions, $fileName);
+    $stmt->bind_param("issss", $userID, $title, $ingredients, $instructions, $fileName);
     $stmt->execute();
     
     $recipeID = $stmt->insert_id;
