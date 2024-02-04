@@ -103,7 +103,7 @@ include("app/includes/html/index.head.php");
 
                   <center>
 
-                    <a href="index.viewrecipe.php?id=<?php echo $row['id'] ?>" class="btn btn-success">View</a>
+                    <a href="index.view.recipe.php?id=<?php echo $row['id'] ?>" class="btn btn-success">View</a>
 
                   </center>
                 </div>

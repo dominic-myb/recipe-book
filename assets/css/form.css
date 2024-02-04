@@ -1,5 +1,5 @@
 body {
-  background-color: #d2e3c8;
+  background-color: #404040;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -8,10 +8,9 @@ body {
 }
 
 .container {
-  
-  box-shadow: 3px 3px 6px #e4debe;
+  box-shadow: 3px 3px 6px #404040;
   border-radius: 8px;
-  padding: 50px;  
+  padding: 50px;
   text-align: center;
 }
 
@@ -23,7 +22,7 @@ h3 {
   font-size: 23px;
   font-family: "Helvetica";
   color: #040d12;
-  text-shadow: 1px 2px 2px #e4debe;
+  text-shadow: 1px 2px 2px #404040;
   letter-spacing: 1px;
 }
 
@@ -52,7 +51,7 @@ input[type="password"]:focus {
   margin: 10px 0;
   border: 0px solid;
   border-radius: 5px;
-  background-color: #12372a;
+  background-color: orange;
   color: #fff;
   font-size: 16px;
   cursor: pointer;
@@ -61,7 +60,7 @@ input[type="password"]:focus {
 }
 
 .btn-primary:hover {
-  background-color: #436850;
+  background-color: #404040;
 }
 
 hr {
@@ -77,7 +76,7 @@ hr {
   margin: 10px 0;
   border: 0px solid;
   border-radius: 5px;
-  background-color: #436850;
+  background-color: orange;
   color: #fff;
   font-size: 16px;
   cursor: pointer;
@@ -87,4 +86,12 @@ hr {
 
 .logbtn:hover {
   background-color: #adbc9f;
+}
+
+.link-container {
+  margin-top: 3vh;
+}
+
+.link-container a {
+  text-decoration: none;
 }
