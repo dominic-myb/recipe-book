@@ -10,7 +10,7 @@ echo '</script>';
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$title = "Café BLK & BRWN";
+$title = "";
 $CSS = "assets/css/main.css";
 include("app/includes/html/index.head.php");
 ?>
@@ -49,60 +49,72 @@ include("app/includes/html/index.head.php");
   <div class="content">
     <h2>Culinary Collaborate</h2>
     <p>Unleash your inner chef, connect over recipes, and savor the art of delicious collaboration!</p>
-    <video autoplay muted loop id="video-bg">
-      <source src="assets/video/background.mp4" type="video/mp4">
-    </video>
+    <!-- <video autoplay muted loop id="video-bg">
+<source src="assets/video/background.mp4" type="video/mp4">
+</video> -->
   </div>
 
   <div class="recipe" id="recipe">
     <div class="recipe-header">
       <h3>Recipes</h3>
     </div>
-    <div class="recipe-box">
-      <?php
-      $sql = "SELECT * FROM recipes ORDER BY id DESC";
-      $result = $conn->query($sql);
-      if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-          ?>
-          <form action="index.php" method="post">
+    <form method="POST">
+      <div class="recipe-box">
+        <?php
+        $sql = "SELECT id, title, image_filename FROM recipes ORDER BY id DESC";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()) {
+            $recipeID = $row['id'];
+            $avgRatingQuery = "SELECT AVG(rating) as avg_rating, COUNT(*) as rating_count FROM ratings WHERE recipe_id = $recipeID";
+            $avgRatingResult = $conn->query($avgRatingQuery);
+            $avgRatingData = $avgRatingResult->fetch_assoc();
+            $averageRating = $avgRatingData['avg_rating'];
+            $ratingCount = $avgRatingData['rating_count'];
+
+            // Calculate percentage based on the average rating (assuming a 5-star system)
+            $percentage = ($averageRating / 5) * 100;
+        ?>
             <div class="item">
               <div class="card">
                 <div class="card-image">
-                  <input type="hidden" name="id" id="id" value="<?php $row['id'] ?>">
                   <img src="assets/uploads/<?php echo $row['image_filename']; ?>" alt="">
                 </div>
                 <div class="card-body">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star-half"></i>
-
-                  <input type="hidden" name="product_price" value="">
-                  <label class="cash">
-                    4.5
-                  </label>
+                  <?php
+                  // Display the star ratings based on the average rating
+                  for ($i = 1; $i <= 5; $i++) {
+                    if ($i <= $averageRating) {
+                      echo '<i class="fa-solid fa-star"></i>';
+                    } else {
+                      if ($i - 1 < $averageRating) {
+                        echo '<i class="fa-solid fa-star-half"></i>';
+                      } else {
+                        echo '<i class="fa-regular fa-star"></i>';
+                      }
+                    }
+                  }
+                  ?>
+                  <span class="rating-percentage"><?php echo round($percentage, 2) . '%'; ?></span>
 
                   <h3>
-                    <?php echo $row['title'] ?>
+                    <?php echo $row['title']; ?>
                   </h3>
-                  
+
                   <center>
-                    <button type="submit" class="view-recipe" name="view-recipe">
-                      View
-                    </button>
+
+                    <a href="index.viewrecipe.php?id=<?php echo $row['id'] ?>" class="btn btn-success">View</a>
+
                   </center>
                 </div>
               </div>
             </div>
-          </form>
-          <?php
+        <?php
+          }
         }
-      }
-      ?>
-
-    </div>
+        ?>
+      </div>
+    </form>
   </div>
 
   <div class="footer">
@@ -121,6 +133,7 @@ include("app/includes/html/index.head.php");
       </div>
     </div>
   </div>
+
   <?php include("app/includes/html/index.foot.php"); ?>
 </body>
 
