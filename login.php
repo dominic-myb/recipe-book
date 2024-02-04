@@ -15,7 +15,7 @@ include("app/includes/html/form.head.php");
     <div class="container">
         <div class="d-flex col-12 flex-row flex-wrap align-items-center justify-content-center p-5">
             <div class="d-flex col-12 col-sm-8 col-lg-4 flex-wrap align-items-center justify-content-center border rounded-4 bg-white p-5 shadow-lg">
-                <h4 style="width: 100%; margin-bottom: 5vh; margin-top: -1vh;">Culinary <span style="color: orange;">Collaboration</span></h4>
+                <h4 style="width: 100%; margin-bottom: 5vh; margin-top: -1vh;">Culinary <span style="color: orange;">Collaborate</span></h4>
                 <form id="login-form" method="post">
                     <div class="form-group mb-4">
                         <input type="text" class="form-control" name="username" id="username" placeholder="Username">
