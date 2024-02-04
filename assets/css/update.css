@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Adjust the height as needed */
+    padding: 20vh;
+}
+.container-2{
+    background-color: #d2e3c8;
+    padding: 10vh;
+    border-radius: 20px;
+}
+
+.container .mb-4,
+.container .input-group,
+.container .mb-3 {
+    width: 100%;
+    max-width: 400px; /* Adjust the max-width as needed */
+    margin-bottom: 15px;
+}
+
+.container .input-group {
+    display: flex;
+}
+
+.container .input-group input {
+    flex: 1;
+}
+.button-container{
+    text-align: center;
+    margin-top: 5vh;
+}
