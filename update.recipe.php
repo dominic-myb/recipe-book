@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
     <?php
-    $select = "SELECT * FROM recipes WHERE user_id = '$userID'";
+    $select = "SELECT * FROM recipes WHERE user_id = '$userID' AND id = '$recipeID'";
     $result = $conn->query($select);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {

@@ -25,7 +25,6 @@ if (isset($_GET['id'])) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="assets/css/vendor/bootstrap-5.2.3-dist/css/bootstrap.min.css">
             <link rel="stylesheet" href="assets/css/index.viewrecipe.css">
-            <link rel="stylesheet" href="assets/css/rating.css"> <!-- Include your custom rating styles -->
             <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
             <title>Recipe - <?php echo $row['title'] ?></title>
         </head>

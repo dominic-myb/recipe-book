@@ -27,6 +27,7 @@ include("app/includes/html/form.head.php");
                     <div style="margin-y:0.5rem;">&nbsp</div>
                     <button type="submit" id="login-btn" class="btn btn-primary btn-block"><?php echo $title;?></button>
                 </form>
+                <p style="margin-top:2vh; margin-left: -1vh;">New to Culinary Collab? <a href="register.php" style="text-decoration: none;">Create Account</a></p>
             </div>
         </div>
     </div>

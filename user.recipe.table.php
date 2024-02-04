@@ -55,12 +55,12 @@ include("app/includes/html/table.head.php");
                             <td class="align-middle text-center">
                                 <form id="update-form" action="update.recipe.php" method="get">
                                     <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
-                                    <button type="button" class="btn btn-primary m-2" id="updateButton">Edit Post</button>
-
-                                    <form id="recipe-form" action="delete.recipe.php" method="get">
-                                        <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
-                                        <button type="button" class="btn btn-danger m-2" id="deleteButton">Delete</button>
-                                    </form>
+                                    <button type="submit" class="btn btn-primary m-2">Edit Post</button>
+                                </form>
+                                <form id="recipe-form" action="delete.recipe.php" method="get">
+                                    <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
+                                    <button type="submit" class="btn btn-danger m-2" id="deleteButton">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     <?php
@@ -136,11 +136,11 @@ include("app/includes/html/table.head.php");
                     alert('Delete canceled!');
                 }
             });
-            $('#updateButton').on('click', function() {
-                var recipeId = $(this).data('recipe-id');
-                $('#update-form').append('<input type="hidden" name="updateid" value="' + recipeId + '">');
-                $('#update-form').submit();
-            });
+            // $('[id^="updateButton"]').on('click', function() {
+            //     var recipeId = $(this).data('recipe-id');
+            //     // $('#update-form').append('<input type="hidden" name="updateid" value="' + recipeId + '">');
+            //     $('#update-form').submit();
+            // });
         });
     </script>
 </body>
