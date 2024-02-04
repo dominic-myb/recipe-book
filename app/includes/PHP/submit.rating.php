@@ -3,15 +3,16 @@ session_start();
 include("../components/connection.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['rating'])) {
-    $rating = $_POST['rating'];
-    $userID = $_SESSION["id"];
-    $recipeID = $_POST['id'];
 
+    $rating = $_POST['rating'];
+    $userID = $_SESSION["id"];      
+    $recipeID = $_POST['id'];
+    //CHECKS IF USER RATED THE RECIPE BEFORE
     $checkRatingQuery = "SELECT * FROM ratings WHERE user_id = '$userID' AND recipe_id = '$recipeID'";
     $checkRatingResult = mysqli_query($conn, $checkRatingQuery);
 
     if (mysqli_num_rows($checkRatingResult) > 0) {
-
+        //IF USER ALREADY RATED, UPDATE
         $updateRatingQuery = "UPDATE ratings SET rating = '$rating' WHERE user_id = '$userID' AND recipe_id = '$recipeID'";
         $updateResult = mysqli_query($conn, $updateRatingQuery);
 
@@ -21,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['rating'])) {
         header("location: ../../../index.view.recipe.php?id=$recipeID");
 
     } else {
-
+        //IF NOT INSERT NEW RATING
         $insertRatingQuery = "INSERT INTO ratings (user_id, recipe_id, rating) VALUES ('$userID','$recipeID','$rating')";
         $insertResult = mysqli_query($conn, $insertRatingQuery);
 
@@ -32,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['rating'])) {
 
     }
 
-
+    //COMMENTS ARE OPTIONAL
     if (isset($_POST['comment']) && !empty($_POST['comment'])) {
         $comment = $_POST['comment'];
 
