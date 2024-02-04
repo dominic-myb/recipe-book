@@ -57,7 +57,7 @@ include("app/includes/html/table.head.php");
                                     <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
                                     <button type="submit" class="btn btn-primary m-2">Edit Post</button>
                                 </form>
-                                <form id="delete-form" action="delete.recipe.php" method="get">
+                                <form id="delete-form" action="app/includes/PHP/delete.recipe.php" method="get">
                                     <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
                                     <button type="submit" class="btn btn-danger m-2" id="deleteButton">Delete</button>
                                 </form>
