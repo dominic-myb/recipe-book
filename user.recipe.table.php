@@ -33,7 +33,7 @@ include("app/includes/html/table.head.php");
             <tbody>
                 <?php
                 $user_id = $_SESSION['id'];
-                $sql = "SELECT recipes.title, images.image_filename FROM images 
+                $sql = "SELECT recipes.title, images.recipe_id, images.image_filename FROM images 
                     INNER JOIN recipes ON recipes.id = images.recipe_id 
                     INNER JOIN users ON images.user_id = users.id
                     WHERE users.id = '$user_id'
@@ -43,29 +43,34 @@ include("app/includes/html/table.head.php");
                 $num = 1;
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        ?>
+                ?>
                         <tr>
                             <td class="align-middle text-center" scope="row">
                                 <?php echo $num++; ?>
                             </td>
-                            <td class="align-middle text-center"><img src="assets/uploads/<?php echo $row['image_filename'] ?>"
-                                    alt=""></td>
+                            <td class="align-middle text-center"><img src="assets/uploads/<?php echo $row['image_filename'] ?>" alt=""></td>
                             <td class="align-middle text-center">
                                 <?php echo $row['title']; ?>
                             </td>
                             <td class="align-middle text-center">
-                                <button type="button" class="btn btn-primary m-2">Edit Post</button>
-                                <button type="button" class="btn btn-danger m-2">Delete</button>
+                                <form id="update-form" action="update.recipe.php" method="get">
+                                    <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
+                                    <button type="button" class="btn btn-primary m-2" id="updateButton">Edit Post</button>
+
+                                    <form id="recipe-form" action="delete.recipe.php" method="get">
+                                        <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
+                                        <button type="button" class="btn btn-danger m-2" id="deleteButton">Delete</button>
+                                    </form>
                             </td>
                         </tr>
-                        <?php
+                    <?php
                     }
                 } else {
                     ?>
                     <tr>
                         <td colspan="4" style="text-align: center;">You don't have any post yet</td>
                     </tr>
-                    <?php
+                <?php
                 }
                 ?>
             </tbody>
@@ -85,22 +90,19 @@ include("app/includes/html/table.head.php");
                     <div class="modal-body">
                         <div class="mb-4">
                             <label for="title" class="form-label">Title</label>
-                            <input class="form-control" type="text" name="title" id="title" placeholder="Title"
-                                required>
+                            <input class="form-control" type="text" name="title" id="title" placeholder="Title">
                         </div>
                         <div class="input-group mb-3">
-                            <input type="file" name="imgToUpload" class="form-control" id="imgToUpload" required>
+                            <input type="file" name="imgToUpload" class="form-control" id="imgToUpload">
                             <label class="input-group-text" for="imgToUpload">Upload</label>
                         </div>
                         <div class="mb-3">
                             <label for="ingredients" class="form-label">Ingredients</label>
-                            <textarea class="form-control" name="ingredients" id="ingredients" rows="3"
-                                required></textarea>
+                            <textarea class="form-control" name="ingredients" id="ingredients" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="instructions" class="form-label">Instructions</label>
-                            <textarea class="form-control" name="instructions" id="instructions" rows="3"
-                                required></textarea>
+                            <textarea class="form-control" name="instructions" id="instructions" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -111,8 +113,36 @@ include("app/includes/html/table.head.php");
             </div>
         </div>
     </div>
+    <!-- End of Post Modal -->
 
     <?php include("app/includes/html/table.foot.php"); ?>
+    <script>
+        $(document).ready(function() {
+            // Attach a click event handler to the Delete button
+            $('#deleteButton').on('click', function() {
+                // Get the recipe ID from the data attribute
+                var recipeId = $(this).data('recipe-id');
+
+                // Show a confirmation dialog
+                var isConfirmed = confirm('Are you sure you want to delete?');
+
+                // Check if the user clicked OK
+                if (isConfirmed) {
+                    // If confirmed, set the recipe ID in a hidden input and submit the form
+                    $('#recipe-form').append('<input type="hidden" name="deleteid" value="' + recipeId + '">');
+                    $('#recipe-form').submit();
+                } else {
+                    // If canceled, do nothing or provide feedback to the user
+                    alert('Delete canceled!');
+                }
+            });
+            $('#updateButton').on('click', function() {
+                var recipeId = $(this).data('recipe-id');
+                $('#update-form').append('<input type="hidden" name="updateid" value="' + recipeId + '">');
+                $('#update-form').submit();
+            });
+        });
+    </script>
 </body>
 
 </html>
