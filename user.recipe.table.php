@@ -57,7 +57,7 @@ include("app/includes/html/table.head.php");
                                     <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
                                     <button type="submit" class="btn btn-primary m-2">Edit Post</button>
                                 </form>
-                                <form id="recipe-form" action="delete.recipe.php" method="get">
+                                <form id="delete-form" action="delete.recipe.php" method="get">
                                     <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
                                     <button type="submit" class="btn btn-danger m-2" id="deleteButton">Delete</button>
                                 </form>
@@ -114,33 +114,22 @@ include("app/includes/html/table.head.php");
         </div>
     </div>
     <!-- End of Post Modal -->
-
     <?php include("app/includes/html/table.foot.php"); ?>
     <script>
-        $(document).ready(function() {
-            // Attach a click event handler to the Delete button
-            $('#deleteButton').on('click', function() {
-                // Get the recipe ID from the data attribute
-                var recipeId = $(this).data('recipe-id');
-
-                // Show a confirmation dialog
-                var isConfirmed = confirm('Are you sure you want to delete?');
-
-                // Check if the user clicked OK
-                if (isConfirmed) {
-                    // If confirmed, set the recipe ID in a hidden input and submit the form
-                    $('#recipe-form').append('<input type="hidden" name="deleteid" value="' + recipeId + '">');
-                    $('#recipe-form').submit();
-                } else {
-                    // If canceled, do nothing or provide feedback to the user
-                    alert('Delete canceled!');
+        $('document').ready(function() {
+            $('#deleteButton').on("click", function(e) {
+                function verifyDeletion() {
+                    var answer = confirm("Are you sure?");
+                    if (answer) {
+                        $('#delete-form').submit();
+                    } else {
+                        e.preventDefault();
+                        alert("Deletion Cancelled.");
+                    }
                 }
+                verifyDeletion();
             });
-            // $('[id^="updateButton"]').on('click', function() {
-            //     var recipeId = $(this).data('recipe-id');
-            //     // $('#update-form').append('<input type="hidden" name="updateid" value="' + recipeId + '">');
-            //     $('#update-form').submit();
-            // });
+
         });
     </script>
 </body>
