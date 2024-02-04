@@ -98,7 +98,7 @@ if (isset($_GET['id'])) {
                 <!-- Recipe Rating Form -->
                 <div class="wrapper">
                     <h3>Your Rating</h3>
-                    <form action="submit.rating.php" method="post">
+                    <form action="app/includes/PHP/submit.rating.php" method="post">
                         <input type="hidden" name="id" value="<?php echo $recipeID ?>">
                         <div class="rating">
                             <input type="number" name="rating" hidden>
@@ -149,7 +149,7 @@ if (isset($_GET['id'])) {
 <?php
     } else {
         echo "<script>alert('Recipe not found.')
-window.location = 'user.recipe.table.php'</script>";
+            window.location = 'user.recipe.table.php'</script>";
     }
 
     $stmt->close();
