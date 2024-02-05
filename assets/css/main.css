@@ -189,7 +189,6 @@ video {
 /* Recipe */
 .card {
   border: none !important;
-
 }
 
 .recipe {
@@ -711,4 +710,11 @@ body {
 
 .content h2 {
   color: orange;
+}
+
+#view-btn{
+  background-color: orange !important;
+  border-color: orange !important;
+  color: #fff !important;
+  font-weight: 500 !important;
 }
