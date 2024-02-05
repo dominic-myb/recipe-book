@@ -7,7 +7,6 @@ function updateUsername($username, $userID, $oldPass, $conn)
   $stmt->bind_param("sis", $username, $userID, $oldPass);
   $stmt->execute();
   if ($stmt->error) {
-    // Handle the error (print it, log it, etc.)
     echo "Update Username Error: " . $stmt->error;
   }
   $affectedRows = $stmt->affected_rows;
@@ -20,7 +19,6 @@ function updateBoth($username, $newPass, $userID, $oldPass, $conn)
   $stmt->bind_param("ssis", $username, $newPass, $userID, $oldPass);
   $stmt->execute();
   if ($stmt->error) {
-    // Handle the error (print it, log it, etc.)
     echo "Update Username Error: " . $stmt->error;
   }
   $affectedRows = $stmt->affected_rows;
@@ -42,7 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $affectedRows = updateBoth($username, $newPass, $userID, $oldPass, $conn);
   }
 
-  $message = ($affectedRows > 0) ? 'Updated Successfully!' : 'Update Failed!';
+  if ($affectedRows > 0) {
+
+    session_unset();        //DESTROY THE SESSION
+    session_destroy();
+
+    $message = 'Updated Successfully! You have been logged out for security reasons.';
+  } else {
+    $message = 'Update Failed!';
+  }
   echo "<script>
     alert('$message');
     window.location.href = 'index.php';
@@ -163,7 +169,7 @@ include("app/includes/html/index.head.php");
           <?php
           }
         } else {
-          ?> 
+          ?>
           <!-- BREAKLINES FOR SPACES IF THERE'S NO RECIPES YET -->
           <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <?php
@@ -246,40 +252,40 @@ include("app/includes/html/index.head.php");
   <?php include("app/includes/html/index.foot.php"); ?>
   <script>
     $(document).ready(function() {
-      $("#search").keyup(function() {     //AFTER USER PRESSES A KEY
-            updateTable();                //RUN THIS FUNC
+      $("#search").keyup(function() { //AFTER USER PRESSES A KEY
+        updateTable(); //RUN THIS FUNC
+      });
+
+      function updateTable() {
+        var input = $("#search").val(); //GETS THE VALUE FROM THE INPUT
+
+        $.ajax({
+          url: "search.php", //GO TO SEARCH USING AJAX ASNYC
+          method: "POST",
+          data: {
+            input: input //PHP GETS THE INPUT
+          },
+          success: function(data) {
+            $(".recipe-box").html(data); //QUERY FROM PHP DISPLAYS ON recipe-box class
+          }
         });
-
-        function updateTable() {          
-            var input = $("#search").val();//GETS THE VALUE FROM THE INPUT
-
-            $.ajax({
-                url: "search.php",         //GO TO SEARCH USING AJAX ASNYC
-                method: "POST",
-                data: {
-                    input: input           //PHP GETS THE INPUT
-                },
-                success: function(data) {
-                    $(".recipe-box").html(data); //QUERY FROM PHP DISPLAYS ON recipe-box class
-                }
-            });
-        }
+      }
 
       $('#show-new-password').change(function() {
         var passwordInput = $('#new-password');
         if ($(this).is(':checked')) {
-          passwordInput.attr('type', 'text');         //IF CHECKED ATTRIBUTE CHANGE TO TEXT
+          passwordInput.attr('type', 'text'); //IF CHECKED ATTRIBUTE CHANGE TO TEXT
         } else {
-          passwordInput.attr('type', 'password');     //IF UNCHECKED ATTRIBUTE CHANGE TO PASSWORD
+          passwordInput.attr('type', 'password'); //IF UNCHECKED ATTRIBUTE CHANGE TO PASSWORD
         }
       });
 
       $('#show-old-password').change(function() {
         var passwordInput = $('#old-password');
-        if ($(this).is(':checked')) {           
-          passwordInput.attr('type', 'text');         //IF CHECKED ATTRIBUTE CHANGE TO TEXT
+        if ($(this).is(':checked')) {
+          passwordInput.attr('type', 'text'); //IF CHECKED ATTRIBUTE CHANGE TO TEXT
         } else {
-          passwordInput.attr('type', 'password');     //IF CHECKED ATTRIBUTE CHANGE TO TEXT
+          passwordInput.attr('type', 'password'); //IF CHECKED ATTRIBUTE CHANGE TO TEXT
         }
       });
     });
