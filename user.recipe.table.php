@@ -53,14 +53,18 @@ if (isset($_SESSION["id"]) != 0) {
                                 <td class="align-middle text-center">
                                     <?php echo $row['title']; ?>
                                 </td>
-                                <td class="align-middle text-center">
-                                    <form id="update-form" action="update.recipe.php" method="get">
+                                <td class="align-middle text-center" id="buttons">
+                                    <form id="update-form" action="update.recipe.php" method="get" class="d-inline">
                                         <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
-                                        <button type="submit" class="btn btn-primary m-2">Edit Post</button>
+                                        <button type="submit" class="btn btn-md btn-primary m-1" id="updateButton">
+                                            <i class="bi bi-pencil"></i> Edit Post
+                                        </button>
                                     </form>
-                                    <form id="delete-form" action="app/includes/PHP/delete.recipe.php" method="get">
+                                    <form id="delete-form" action="app/includes/PHP/delete.recipe.php" method="get" class="d-inline">
                                         <input type="hidden" name="id" value="<?php echo $row['recipe_id']; ?>">
-                                        <button type="submit" class="btn btn-danger m-2" id="deleteButton">Delete</button>
+                                        <button type="submit" class="btn btn-danger m-1 delete-button" id="deleteButton">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -118,21 +122,24 @@ if (isset($_SESSION["id"]) != 0) {
         <?php include("app/includes/html/table.foot.php"); ?>
         <script>
             $('document').ready(function() {
-                $('#deleteButton').on("click", function(e) {
+                $('.delete-button').on("click", function(e) {
+                    e.preventDefault(); // Prevent the default form submission
+
                     function verifyDeletion() {
                         var answer = confirm("Are you sure?");
                         if (answer) {
-                            $('#delete-form').submit();
+                            // Trigger the form submission for the clicked button
+                            $(this).closest('form').submit();
                         } else {
-                            e.preventDefault();
                             alert("Deletion Cancelled.");
                         }
                     }
-                    verifyDeletion();
-                });
 
+                    verifyDeletion.call(this); // Use call to set the correct context (this) inside verifyDeletion
+                });
             });
         </script>
+
     </body>
 
     </html>
