@@ -4,7 +4,7 @@ $(document).ready(function () {
         var accountDropdown = $(".account-drp");
         var loginLink = '<a href="login.php">Login</a>';
         var signupLink = '<a href="register.php">Sign Up</a>';
-        var accountSettingsLink = '<a href="#">Account Settings</a>';
+        var accountSettingsLink = '<a href="#" data-bs-toggle="modal" data-bs-target="#acc-setting">Account Settings</a>';
         var logoutLink = '<a href="app/includes/PHP/logout.php" style="color:red;">Logout</a>';
 
         if (!isAuthenticated) {
