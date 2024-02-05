@@ -95,3 +95,11 @@ hr {
 .link-container a {
   text-decoration: none;
 }
+#logo{
+  text-decoration: none; 
+  width: 100%; 
+  margin-bottom: 5vh; 
+  margin-top: -1vh;
+  font-size: 22px;
+  color: #000;
+}
