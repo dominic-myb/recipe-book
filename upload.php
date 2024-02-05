@@ -10,7 +10,6 @@ if (isset($_SESSION["id"]) != 0) {
         $stmt->close();
     }
 
-
     function insertRecipe($userID, $title, $ingredients, $instructions, $fileName, $conn)
     {
         $stmt = $conn->prepare("INSERT INTO recipes (user_id, title, ingredients, instructions, image_filename) VALUES (?, ?, ?, ?, ?)");
