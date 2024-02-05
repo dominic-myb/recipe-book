@@ -15,7 +15,12 @@ if (isset($_GET['id'])) {
         $row = $result->fetch_assoc();
 
         // Fetch user rating
-        $userID = $_SESSION["id"];
+        if(isset($_SESSION['id'])){
+            $userID = $_SESSION["id"];
+        }else{
+            $userID = "0";
+        }
+        
 ?>
         <!DOCTYPE html>
         <html lang="en">
@@ -30,11 +35,11 @@ if (isset($_GET['id'])) {
         </head>
 
         <body>
-        <header>
-    <div class="logo">
-      <a href="index.php">Culinary <span>Collaborate</span></a>
-    </div>
-  </header>
+            <header>
+                <div class="logo">
+                    <a href="index.php">Culinary <span>Collaborate</span></a>
+                </div>
+            </header>
             <div class="container">
                 <div class="recipe-card">
                     <div class="recipe-image">
@@ -83,11 +88,11 @@ if (isset($_GET['id'])) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                 ?>
                                     <p><span><?php echo $row['username'] ?></span>: <?php echo $row['content'] ?></p>
-                            <?php
+                                <?php
                                 }
                             } else {
-                            ?>
-                            <p style="text-align: center; margin-left:-20px;">Be the first one to comment!</p>
+                                ?>
+                                <p style="text-align: center; margin-left:-20px;">Be the first one to comment!</p>
                             <?php
                             }
                             ?>
