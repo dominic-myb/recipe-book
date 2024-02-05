@@ -1,7 +1,8 @@
 <?php
 session_start();
 include("app/includes/components/connection.php");
-function updateUsername($username, $userID, $oldPass, $conn) {
+function updateUsername($username, $userID, $oldPass, $conn)
+{
   $stmt = $conn->prepare("UPDATE users SET username = ? WHERE id = ? AND password = ?");
   $stmt->bind_param("sis", $username, $userID, $oldPass);
   $stmt->execute();
@@ -13,7 +14,8 @@ function updateUsername($username, $userID, $oldPass, $conn) {
   $stmt->close();
   return $affectedRows;
 }
-function updateBoth($username, $newPass, $userID, $oldPass, $conn) {
+function updateBoth($username, $newPass, $userID, $oldPass, $conn)
+{
   $stmt = $conn->prepare("UPDATE users SET username = ?, password = ? WHERE id = ? AND password = ?");
   $stmt->bind_param("ssis", $username, $newPass, $userID, $oldPass);
   $stmt->execute();
@@ -33,10 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   $affectedRows = 0;
 
-  if(empty($newPass) && !empty($username)){
+  if (empty($newPass) && !empty($username)) {
     $affectedRows = updateUsername($username, $userID, $oldPass, $conn);
   }
-  if(!empty($username) && !empty($newPass) && !empty($oldPass) && !empty($userID)){
+  if (!empty($username) && !empty($newPass) && !empty($oldPass) && !empty($userID)) {
     $affectedRows = updateBoth($username, $newPass, $userID, $oldPass, $conn);
   }
 
@@ -103,6 +105,13 @@ include("app/includes/html/index.head.php");
   <div class="recipe" id="recipe">
     <div class="recipe-header">
       <h3>Recipes</h3>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <input type="text" id="search" class="form-control" placeholder="Search . . .">
+          </div>
+        </div>
+      </div>
     </div>
     <form method="POST">
       <div class="recipe-box">
@@ -154,7 +163,8 @@ include("app/includes/html/index.head.php");
           <?php
           }
         } else {
-          ?>
+          ?> 
+          <!-- BREAKLINES FOR SPACES IF THERE'S NO RECIPES YET -->
           <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <?php
         }
@@ -191,38 +201,38 @@ include("app/includes/html/index.head.php");
         </div>
         <form method="post">
           <div class="modal-body">
-              <?php
-              $userID = $_SESSION['id'];
-              $result = $conn->query("SELECT username FROM users WHERE id = '$userID'");
-              if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-              ?>
-                <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input type="text" class="form-control" name="username" id="username" aria-describedby="username" value="<?php echo $row['username'] ?>">
-                  <div id="username" class="form-text">Hey chef!</div>
-                </div>
+            <?php
+            $userID = $_SESSION['id'];
+            $result = $conn->query("SELECT username FROM users WHERE id = '$userID'");
+            if ($result->num_rows > 0) {
+              $row = $result->fetch_assoc();
+            ?>
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" id="username" aria-describedby="username" value="<?php echo $row['username'] ?>">
+                <div id="username" class="form-text">Hey chef!</div>
+              </div>
 
-                <div class="mb-3">
-                  <label for="new-password" class="form-label">New Password</label>
-                  <input type="password" name="new-password" class="form-control" id="new-password">
-                </div>
-                <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="show-new-password">
-                  <label class="form-check-label" for="show-new-password">Show Password</label>
-                </div>
+              <div class="mb-3">
+                <label for="new-password" class="form-label">New Password</label>
+                <input type="password" name="new-password" class="form-control" id="new-password">
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="show-new-password">
+                <label class="form-check-label" for="show-new-password">Show Password</label>
+              </div>
 
-                <div class="mb-3 mt-4">
-                  <label for="old-password" class="form-label">Old Password</label>
-                  <input type="password" name="old-password" class="form-control" id="old-password" placeholder="Type your old password to confirm">
-                </div>
-                <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="show-old-password">
-                  <label class="form-check-label" for="show-old-password">Show Password</label>
-                </div>
-              <?php
-              }
-              ?>
+              <div class="mb-3 mt-4">
+                <label for="old-password" class="form-label">Old Password</label>
+                <input type="password" name="old-password" class="form-control" id="old-password" placeholder="Type your old password to confirm">
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="show-old-password">
+                <label class="form-check-label" for="show-old-password">Show Password</label>
+              </div>
+            <?php
+            }
+            ?>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -236,20 +246,40 @@ include("app/includes/html/index.head.php");
   <?php include("app/includes/html/index.foot.php"); ?>
   <script>
     $(document).ready(function() {
+      $("#search").keyup(function() {     //AFTER USER PRESSES A KEY
+            updateTable();                //RUN THIS FUNC
+        });
+
+        function updateTable() {          
+            var input = $("#search").val();//GETS THE VALUE FROM THE INPUT
+
+            $.ajax({
+                url: "search.php",         //GO TO SEARCH USING AJAX ASNYC
+                method: "POST",
+                data: {
+                    input: input           //PHP GETS THE INPUT
+                },
+                success: function(data) {
+                    $(".recipe-box").html(data); //QUERY FROM PHP DISPLAYS ON recipe-box class
+                }
+            });
+        }
+
       $('#show-new-password').change(function() {
         var passwordInput = $('#new-password');
         if ($(this).is(':checked')) {
-          passwordInput.attr('type', 'text');
+          passwordInput.attr('type', 'text');         //IF CHECKED ATTRIBUTE CHANGE TO TEXT
         } else {
-          passwordInput.attr('type', 'password');
+          passwordInput.attr('type', 'password');     //IF UNCHECKED ATTRIBUTE CHANGE TO PASSWORD
         }
       });
+
       $('#show-old-password').change(function() {
         var passwordInput = $('#old-password');
-        if ($(this).is(':checked')) {
-          passwordInput.attr('type', 'text');
+        if ($(this).is(':checked')) {           
+          passwordInput.attr('type', 'text');         //IF CHECKED ATTRIBUTE CHANGE TO TEXT
         } else {
-          passwordInput.attr('type', 'password');
+          passwordInput.attr('type', 'password');     //IF CHECKED ATTRIBUTE CHANGE TO TEXT
         }
       });
     });
