@@ -1,6 +1,52 @@
 <?php
 session_start();
 include("app/includes/components/connection.php");
+function updateUsername($username, $userID, $oldPass, $conn) {
+  $stmt = $conn->prepare("UPDATE users SET username = ? WHERE id = ? AND password = ?");
+  $stmt->bind_param("sis", $username, $userID, $oldPass);
+  $stmt->execute();
+  if ($stmt->error) {
+    // Handle the error (print it, log it, etc.)
+    echo "Update Username Error: " . $stmt->error;
+  }
+  $affectedRows = $stmt->affected_rows;
+  $stmt->close();
+  return $affectedRows;
+}
+function updateBoth($username, $newPass, $userID, $oldPass, $conn) {
+  $stmt = $conn->prepare("UPDATE users SET username = ?, password = ? WHERE id = ? AND password = ?");
+  $stmt->bind_param("ssis", $username, $newPass, $userID, $oldPass);
+  $stmt->execute();
+  if ($stmt->error) {
+    // Handle the error (print it, log it, etc.)
+    echo "Update Username Error: " . $stmt->error;
+  }
+  $affectedRows = $stmt->affected_rows;
+  $stmt->close();
+  return $affectedRows;
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $username = $_POST['username'];
+  $newPass = $_POST['new-password'];
+  $oldPass = $_POST['old-password'];
+  $userID = $_SESSION['id'];
+
+  $affectedRows = 0;
+
+  if(empty($newPass) && !empty($username)){
+    $affectedRows = updateUsername($username, $userID, $oldPass, $conn);
+  }
+  if(!empty($username) && !empty($newPass) && !empty($oldPass) && !empty($userID)){
+    $affectedRows = updateBoth($username, $newPass, $userID, $oldPass, $conn);
+  }
+
+  $message = ($affectedRows > 0) ? 'Updated Successfully!' : 'Update Failed!';
+  echo "<script>
+    alert('$message');
+    window.location.href = 'index.php';
+    </script>";
+}
+
 $isAuthenticated = isset($_SESSION['username']);
 $jsUsername = $isAuthenticated ? $_SESSION['username'] : '';
 echo '<script>';
@@ -100,13 +146,17 @@ include("app/includes/html/index.head.php");
                     <?php echo $row['title']; ?>
                   </h3>
                   <center>
-                    <a href="index.view.recipe.php?id=<?php echo $row['id'] ?>" class="btn btn-success">View</a>
+                    <a href="index.view.recipe.php?id=<?php echo $row['id'] ?>" class="btn" id="view-btn">View</a>
                   </center>
                 </div>
               </div>
             </div>
-        <?php
+          <?php
           }
+        } else {
+          ?>
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <?php
         }
         ?>
       </div>
@@ -129,8 +179,81 @@ include("app/includes/html/index.head.php");
       </div>
     </div>
   </div>
+  <!-- Post A Recipe Modal -->
+  <div class="modal fade" id="acc-setting" tabindex="-1" aria-labelledby="acc-setting-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <div class="w-100">
+            <h1 class="modal-title fs-5 d-inline mx-auto" id="acc-setting-label">Account Settings</h1>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post">
+          <div class="modal-body">
+              <?php
+              $userID = $_SESSION['id'];
+              $result = $conn->query("SELECT username FROM users WHERE id = '$userID'");
+              if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+              ?>
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control" name="username" id="username" aria-describedby="username" value="<?php echo $row['username'] ?>">
+                  <div id="username" class="form-text">Hey chef!</div>
+                </div>
 
+                <div class="mb-3">
+                  <label for="new-password" class="form-label">New Password</label>
+                  <input type="password" name="new-password" class="form-control" id="new-password">
+                </div>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="show-new-password">
+                  <label class="form-check-label" for="show-new-password">Show Password</label>
+                </div>
+
+                <div class="mb-3 mt-4">
+                  <label for="old-password" class="form-label">Old Password</label>
+                  <input type="password" name="old-password" class="form-control" id="old-password" placeholder="Type your old password to confirm">
+                </div>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="show-old-password">
+                  <label class="form-check-label" for="show-old-password">Show Password</label>
+                </div>
+              <?php
+              }
+              ?>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End of Post Modal -->
   <?php include("app/includes/html/index.foot.php"); ?>
+  <script>
+    $(document).ready(function() {
+      $('#show-new-password').change(function() {
+        var passwordInput = $('#new-password');
+        if ($(this).is(':checked')) {
+          passwordInput.attr('type', 'text');
+        } else {
+          passwordInput.attr('type', 'password');
+        }
+      });
+      $('#show-old-password').change(function() {
+        var passwordInput = $('#old-password');
+        if ($(this).is(':checked')) {
+          passwordInput.attr('type', 'text');
+        } else {
+          passwordInput.attr('type', 'password');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
